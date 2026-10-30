@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <title>JavaScriptの練習</title>
+    <script>
+      alert();
+    </script>
+  </head>
+    <body>
+    <p>ページ</p>
+    <script>
+          let num = 5;          // 変数
+      console.log(typeof num);   // ★足す → number（数値）と出る
+      const NUMBER = 3;     // 定数
+      num = "文字文字文字";  // 数値を入れた変数に文字列を入れても、エラーにならない
+      console.log(typeof num);   // ★足す → string（文字列）と出る
+      console.log(num);
+      console.log(`numの中身は ${num} です`);   // → numの中身は 文字文字文字 です
+      
+      console.log(2 ** 3);
+      const price = 500;
+      const tax = price * 0.08;
+
+      console.log(`500円の消費税（8%）は${tax}円です`);
+
+      console.log(1 + 2);
+      console.log("1" + "2");
+    </script>
+  </body>
+</html>

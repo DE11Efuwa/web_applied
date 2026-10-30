@@ -1,0 +1,143 @@
+
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>ダッシュゲーム</title>
+
+  <style>
+    body {
+      text-align: center;
+      background: #eeeeff;
+      font-family: sans-serif;
+    }
+
+    #stage {
+      position: relative;
+      width: 600px;
+      height: 240px;
+      margin: 20px auto;
+      background: #d9edff;
+      border: 4px solid #333;
+      overflow: hidden;
+    }
+
+    #box {
+      position: absolute;
+      width: 48px;
+      height: 48px;
+      background: #2878e8;
+      border-radius: 10px;
+    }
+
+    #goal {
+      position: absolute;
+      width: 48px;
+      height: 48px;
+      background: gold;
+      right: 10px;
+      top: 96px;
+    }
+
+    #message {
+      font-size: 24px;
+      font-weight: bold;
+    }
+  </style>
+</head>
+
+<body>
+
+  <h1>ダッシュゲーム</h1>
+  <p>矢印キーで移動・Spaceでダッシュ！</p>
+
+  <div id="stage">
+    <div id="box"></div>
+    <div id="goal"></div>
+  </div>
+
+  <p id="message">ゴールを目指そう！</p>
+
+  <script>
+    const box = document.getElementById("box");
+    const message = document.getElementById("message");
+
+    let x = 50;
+    let y = 96;
+
+    const speed = 4;
+    const keys = {};
+
+    // キーを押したとき
+    document.addEventListener("keydown", (e) => {
+      keys[e.code] = true;
+    });
+
+    // キーを離したとき
+    document.addEventListener("keyup", (e) => {
+      keys[e.code] = false;
+    });
+
+    // キャラクターの表示
+    function draw() {
+      box.style.left = x + "px";
+      box.style.top = y + "px";
+    }
+
+    // ゲームの動き
+    function update() {
+
+      let moveSpeed = speed;
+
+      // Spaceでダッシュ
+      if (keys["Space"]) {
+        moveSpeed = 8;
+      }
+
+      if (keys["ArrowRight"]) {
+        x = x + moveSpeed;
+      }
+
+      if (keys["ArrowLeft"]) {
+        x = x - moveSpeed;
+      }
+
+      if (keys["ArrowDown"]) {
+        y = y + moveSpeed;
+      }
+
+      if (keys["ArrowUp"]) {
+        y = y - moveSpeed;
+      }
+
+      // 画面の端で止める
+      if (x < 0) {
+        x = 0;
+      }
+
+      if (x > 600 - 48) {
+        x = 600 - 48;
+      }
+
+      if (y < 0) {
+        y = 0;
+      }
+
+      if (y > 240 - 48) {
+        y = 240 - 48;
+      }
+
+      // ゴール判定
+      if (x < 10 + 48 && x + 48 > 600 - 48 - 10 &&
+          y < 96 + 48 && y + 48 > 96) {
+        message.innerText = "ゴール！！";
+      }
+
+      draw();
+    }
+
+    setInterval(update, 16);
+  </script>
+
+</body>
+</html>
