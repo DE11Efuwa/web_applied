@@ -78,8 +78,7 @@ document.addEventListener("keydown", (e) => {
 // ボールを描く
 function draw() {
   // 前のボールを薄くして残像を作る
-  ctx.fillStyle = "rgba(255, 255, 255, 0.08)";
-  ctx.fillRect(0, 0, canvas.width, canvas.height);
+ctx.clearRect(0, 0, canvas.width, canvas.height);
 
   ctx.fillStyle = color;
   ctx.beginPath();
