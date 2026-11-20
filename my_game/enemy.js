@@ -10,6 +10,12 @@ let enemies = [];
 enemies.push(createEnemy(200, 80));
 enemies.push(createEnemy(380, -120));
 enemies.push(createEnemy(540, 60));
+// 気まぐれな敵を追加
+const special = createEnemy(300, 100);
+special.type = "random";
+special.timer = 0;
+special.changeTime = 1;
+enemies.push(special);
 
 // ③ 動かす：配列の敵を1体ずつ取り出して、同じ処理をする
 function updateEnemies(dt) {
