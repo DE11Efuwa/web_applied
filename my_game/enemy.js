@@ -1,5 +1,20 @@
 // 敵：作る・入れる・動かす・描く（足すものの形）
-
+let gameState = "title";   // ゲーム全体の状態："title"・"play"・"pause"（このあと "gameover" も足す）
+ 
+// ゲーム全体のキーボードイベント処理
+document.addEventListener("keydown", (e) => {
+  if (e.code === "Enter" && gameState === "title") {
+    gameState = "play";
+  }
+  if (e.code === "KeyP") {
+    if (gameState === "play") {
+      gameState = "pause";
+    } else if (gameState === "pause") {
+      gameState = "play";
+    }
+  }
+});
+ 
 // ① 作る：敵を1体作って返す関数（呼ぶたびに、新しい敵が1体できる）
 function createEnemy(x, vx) {
   return { x: x, y: floor.y - 32, w: 32, h: 32, vx: vx, alive: true };
