@@ -20,6 +20,16 @@ enemies.push(special);
 // ③ 動かす：配列の敵を1体ずつ取り出して、同じ処理をする
 function updateEnemies(dt) {
   for (const enemy of enemies) {
+        // 気まぐれな敵だけの処理
+    if (enemy.type === "random") {
+      enemy.timer = enemy.timer + dt;
+
+      if (enemy.timer >= enemy.changeTime) {
+        enemy.vx = -enemy.vx;
+        enemy.timer = 0;
+        enemy.changeTime = 1 + Math.random() * 2;
+      }
+    }
     enemy.x = enemy.x + enemy.vx * dt;
     // 端を越えたら、位置を戻して、向きを反対に（５-４の跳ね返り）
     if (enemy.x < 0) {
@@ -44,8 +54,12 @@ function collideWithEnemies(prevBottom) {
 }
 // ④ 描く：配列の敵を1体ずつ取り出して描く
 function drawEnemies() {
-  ctx.fillStyle = "#ff6b6b";
   for (const enemy of enemies) {
+    if (enemy.type === "random") {
+      ctx.fillStyle = "#9b59b6";
+    } else {
+      ctx.fillStyle = "#ff6b6b";
+    }
     ctx.fillRect(enemy.x, enemy.y, enemy.w, enemy.h);
   }
   ctx.fillStyle = "#e8eeff";
