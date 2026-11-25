@@ -1,5 +1,31 @@
 // 全体の流れ：毎回「動かす → 描く」をくり返す
+let gameState = "title";   // ゲーム全体の状態："title"・"play"・"pause"（このあと "gameover" も足す）
 
+// ゲームを最初の値に戻す（後から足す値も、ここに足す）
+function resetGame() {
+  resetPlayer();
+  resetEnemies();
+}
+ 
+// 始める：最初の値に戻してから、プレイ中にする
+function startGame() {
+  resetGame();
+  gameState = "play";
+}
+// ゲーム全体のキーボードイベント処理
+document.addEventListener("keydown", (e) => {
+  if (e.code === "Enter" && (gameState === "title" || gameState === "gameover")) {
+      startGame();
+  }
+  if (e.code === "KeyP") {
+    if (gameState === "play") {
+      gameState = "pause";
+    } else if (gameState === "pause") {
+      gameState = "play";
+    }
+  }
+});
+ 
 // 役割ごとの「動かす」関数を呼ぶ
 function update(dt) {
     if (gameState !== "play") {
@@ -9,6 +35,9 @@ function update(dt) {
   updatePlayer(dt);
   updateEnemies(dt);
   collideWithEnemies(prevBottom);
+    if (player.hp <= 0) {
+    gameState = "gameover";
+  }
 }
 
 // 画面のまん中に文字を書く
@@ -35,6 +64,9 @@ function draw() {
   drawPlayer();
     if (gameState === "pause") {
     drawMessage("PAUSE", "P でつづける");
+  }
+    if (gameState === "gameover") {
+    drawMessage("GAME OVER", "Enter でもう一度");
   }
 }
 

@@ -1,20 +1,4 @@
 // 敵：作る・入れる・動かす・描く（足すものの形）
-let gameState = "title";   // ゲーム全体の状態："title"・"play"・"pause"（このあと "gameover" も足す）
- 
-// ゲーム全体のキーボードイベント処理
-document.addEventListener("keydown", (e) => {
-  if (e.code === "Enter" && gameState === "title") {
-    gameState = "play";
-  }
-  if (e.code === "KeyP") {
-    if (gameState === "play") {
-      gameState = "pause";
-    } else if (gameState === "pause") {
-      gameState = "play";
-    }
-  }
-});
- 
 // ① 作る：敵を1体作って返す関数（呼ぶたびに、新しい敵が1体できる）
 function createEnemy(x, vx) {
   return { x: x, y: floor.y - 32, w: 32, h: 32, vx: vx, alive: true };
@@ -22,15 +6,20 @@ function createEnemy(x, vx) {
 
 // ② 入れる：敵をまとめて入れる配列（７-６で入れ直すので let）
 let enemies = [];
-enemies.push(createEnemy(200, 80));
-enemies.push(createEnemy(380, -120));
-enemies.push(createEnemy(540, 60));
-// 気まぐれな敵を追加
+// 最初の敵を入れ直す（★ main.js の resetGame から呼ばれる）
+function resetEnemies() {
+  enemies = [];
+  enemies.push(createEnemy(200, 80));
+  enemies.push(createEnemy(380, -120));
+  enemies.push(createEnemy(540, 60));
+  // 気まぐれな敵を追加
 const special = createEnemy(300, 100);
 special.type = "random";
 special.timer = 0;
 special.changeTime = 1;
 enemies.push(special);
+  // ↑ 授業でくじの敵を足した人は、その行（const special = … から enemies.push(special); まで）もここへ
+}
 
 // ③ 動かす：配列の敵を1体ずつ取り出して、同じ処理をする
 function updateEnemies(dt) {
