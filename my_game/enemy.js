@@ -70,20 +70,42 @@ function updateEnemies(dt) {
     }
   }
 }
-// プレイヤーとぶつかったとき：上から落ちてきたときだけ、敵を倒す
+
+// プレイヤーとぶつかったとき：上から落ちてきたら敵を倒す
 function collideWithEnemies(prevBottom) {
+  const stompedEnemies = [];
+  let hitSide = false;
+
+  // まず、すべての敵との当たり判定を調べる
   for (const enemy of enemies) {
-    if (aabb(player, enemy) && prevBottom <= enemy.y && player.vy > 0) {
-      enemy.alive = false;            // 倒した（状態を書き換える）
-      player.vy = -JUMP_SPEED / 2;    // 踏んだら、少し跳ねる
-      score = score + 1;              // 点数を足す（★ main.js の score を書き換える）
-    } else if (aabb(player, enemy) && player.hitTimer <= 0) {
-      player.hp = player.hp - 1;      // 横から当たった：HP を減らす（★ player.js の値を書き換える）
-      player.hitTimer = HIT_TIME;     // しばらく当たらない
+    if (aabb(player, enemy)) {
+      if (prevBottom <= enemy.y && player.vy > 0) {
+        stompedEnemies.push(enemy);
+      } else {
+        hitSide = true;
+      }
     }
   }
-    enemies = enemies.filter((enemy) => enemy.alive);   // 生きている敵だけを残す
+
+  // 踏んだ敵があれば、すべて倒す
+  if (stompedEnemies.length > 0) {
+    for (const enemy of stompedEnemies) {
+      enemy.alive = false;
+      score = score + 1;
+    }
+
+    player.vy = -JUMP_SPEED / 2;
+  }
+  // 踏んでいない場合だけHPを減らす
+  else if (hitSide && player.hitTimer <= 0) {
+    player.hp = player.hp - 1;
+    player.hitTimer = HIT_TIME;
+  }
+
+  // 生きている敵だけを残す
+  enemies = enemies.filter((enemy) => enemy.alive);
 }
+
 // ④ 描く：配列の敵を1体ずつ取り出して描く
 function drawEnemies() {
   for (const enemy of enemies) {
