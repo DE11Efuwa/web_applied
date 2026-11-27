@@ -76,7 +76,7 @@ function draw() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
   drawStage();
     if (gameState === "title") {
-    drawMessage("my game", "Enter かクリックで始める");
+    drawMessage("ふみふみパニック", "Enter かクリックで始める");
     drawAim();
     return;                 // タイトルでは、敵とプレイヤーは描かない
   }
